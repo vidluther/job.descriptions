@@ -25,14 +25,19 @@ export default async function (req, res) {
     return;
   }
 
+  const capitalizedjob =
+  job[0].toUpperCase() + job.slice(1).toLowerCase();
+
   try {
+
+
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(job),
+      prompt: generatePrompt(capitalizedjob),
       temperature: 0.7,
       max_tokens: 300
     });
-    console.log(completion.data.choices[0]);
+    //console.log(completion.data.choices[0]);
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
@@ -51,13 +56,12 @@ export default async function (req, res) {
 }
 
 function generatePrompt(job) {
-  const capitalizedjob =
-    job[0].toUpperCase() + job.slice(1).toLowerCase();
+
   return `I am thinking of taking a class that teaches ${job}, before I take this class, I want to know
   what I will be doing at work if I pursue a career in this field? And how much money can I make
   in Texas, if I take this job?
 
-job: ${capitalizedjob}
+job: ${job}
 Description:
 Salary Range:
 `;

@@ -2,7 +2,8 @@ import Head from 'next/head'
 import { useState,useEffect } from "react";
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+//import styles from '@/styles/Home.module.css'
+import Footer from 'components/Footer';
 
 import { BeakerIcon } from '@heroicons/react/24/solid'
 
@@ -93,7 +94,9 @@ export default function Home() {
             </div>
           </form>
           </div>
+          <BeakerIcon className="h-6 w-6 text-red-500"/>
         <code> {result} </code>
+        <Footer />
 
         </div>
 
