@@ -56,6 +56,7 @@ export default function Home() {
         <title>OpenAI Job Descriptions</title>
         <meta name="description" content="A simple job description generator using OpenAI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script defer data-domain="job-descriptions.vercel.app" src="https://plausible.io/js/script.js"></script>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col items-center justify-center h-screen">
