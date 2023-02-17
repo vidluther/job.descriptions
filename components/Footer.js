@@ -10,7 +10,8 @@ export default function Footer() {
           <Link className="text-gray-700 hover:text-gray-900" href="https://luther.io">
             Vid Luther
           </Link>{' '}
-          in the year 2023
+          in 2023. <br />
+          <Link href="https://plausible.io/job-descriptions.vercel.app?goal=Looked+Up"> Checkout what people are looking for .. </Link>
         </p>
       </div>
     </footer>
