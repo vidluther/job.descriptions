@@ -4,6 +4,7 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+import { usePlausible } from 'next-plausible'
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
