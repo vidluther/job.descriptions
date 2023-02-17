@@ -6,11 +6,13 @@ import { Inter } from '@next/font/google'
 import Footer from 'components/Footer';
 
 import { BeakerIcon } from '@heroicons/react/24/solid'
+import { usePlausible } from 'next-plausible'
 
 const inter = Inter({ subsets: ['latin'] })
 const jobTitles = ['Software engineer', 'Aircraft Mechanic', 'Cosmetologist', "Mechanic", "Zookeeper", "Cashier"];
 
 export default function Home() {
+  const plausible = usePlausible()
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
@@ -26,7 +28,7 @@ export default function Home() {
 
 
   async function onSubmit(event) {
-    console.log(`Looking up ${searchTerm}...`);
+    console.log(`Looking up ${jobName}...`);
     event.preventDefault();
     try {
       const response = await fetch("/api/generate", {
@@ -56,7 +58,7 @@ export default function Home() {
         <title>OpenAI Job Descriptions</title>
         <meta name="description" content="A simple job description generator using OpenAI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script defer data-domain="job-descriptions.vercel.app" src="https://plausible.io/js/script.js"></script>
+
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col items-center justify-center h-screen">
@@ -87,6 +89,10 @@ export default function Home() {
                   onChange={(e) => setjobName(e.target.value)}
                 />
                 <button
+                  onClick={() =>
+                    plausible('Looked Up', {
+                      props: { job: jobName },
+                    })}
                   type="submit"
                   value="Tell Me more...."
                   className="ml-3 inline-flex items-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800">
