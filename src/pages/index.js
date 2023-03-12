@@ -77,13 +77,13 @@ export default function Home() {
         </h1>
       </header>
         </div>
-        <div className="px-4 py-5 sm:p-6">
+        <div className="px-8 py-5 sm:p-6">
             <form onSubmit={onSubmit}>
             <div className="w-full sm:max-w-xs">
                 <input
                   type="text"
                   name="jobName"
-                  className="py-2 px-4 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:ring-blue-400"
+                  className="py-2 px-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:ring-blue-400"
                   placeholder="Enter name of the job"
                   value={jobName}
                   onChange={(e) => setjobName(e.target.value)}
