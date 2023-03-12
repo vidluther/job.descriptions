@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+const version = process.env.npm_package_version;
 
 export default function Footer() {
   return (
@@ -11,7 +12,8 @@ export default function Footer() {
             Vid Luther
           </Link>{' '}
           in 2023. <br />
-          <Link href="https://plausible.io/job-descriptions.vercel.app?goal=Looked+Up"> Checkout what people are looking for .. </Link>
+          <Link href="https://plausible.io/job-descriptions.vercel.app?goal=Looked+Up"> Checkout what people are looking for .. </Link> <br />
+
         </p>
       </div>
     </footer>

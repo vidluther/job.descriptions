@@ -32,14 +32,14 @@ export default async function (req, res) {
   try {
 
 
-    const completion = await openai.createCompletion({
+    const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      prompt: generatePrompt(capitalizedjob),
+      messages: generateMessages(capitalizedjob),
       temperature: 0.7,
       max_tokens: 300
     });
-    //console.log(completion.data.choices[0]);
-    res.status(200).json({ result: completion.data.choices[0].text });
+    console.log(completion.data.choices[0]);
+    res.status(200).json({ result: completion.data.choices[0].message.content });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
@@ -56,14 +56,14 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(job) {
+function generateMessages(job) {
+  console.log("looking up " + job)
 
-  return `I am thinking of taking a class that teaches ${job}, before I take this class, I want to know
-  what I will be doing at work if I pursue a career in this field? And how much money can I make
-  in Texas, if I take this job?
+  const messages = [
+    {"role": "system", "content": "You are a helpful assistant that helps people understand what a career in a certain field entails, and how much money someone can make, if they decided to pursue a career in said field"},
+    {"role": "user", "content": 'Tell me what a day in the life of of a person who has the following job title may look like, and how much money can they make doing this job in Texas?' + job},
+  ]
 
-job: ${job}
-Description:
-Salary Range:
-`;
+  return messages;
+
 }

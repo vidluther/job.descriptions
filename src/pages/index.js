@@ -11,12 +11,16 @@ import { usePlausible } from 'next-plausible'
 const inter = Inter({ subsets: ['latin'] })
 const jobTitles = ['Software engineer', 'Aircraft Mechanic', 'Cosmetologist', "Mechanic", "Zookeeper", "Cashier"];
 
+
+
 export default function Home() {
   const plausible = usePlausible()
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
-  const [searchTerm, setSearchTerm] = useState('');
+  //const [searchTerm, setSearchTerm] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -28,8 +32,11 @@ export default function Home() {
 
 
   async function onSubmit(event) {
-    console.log(`Looking up ${jobName}...`);
     event.preventDefault();
+
+    setIsProcessing(true);
+
+    console.log(`Looking up ${jobName}...`);
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -46,11 +53,13 @@ export default function Home() {
 
       setResult(data.result);
       setjobName("");
+      setIsProcessing(false);
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
     }
+
   }
   return (
     <>
@@ -94,9 +103,13 @@ export default function Home() {
                       props: { job: jobName },
                     })}
                   type="submit"
-                  value="Tell Me more...."
-                  className="ml-3 inline-flex items-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800">
-                  Look up..
+                  value="Look up..."
+                  className="ml-3 inline-flex items-center rounded-md border border-transparent
+                  bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600
+                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800
+                  ${isProcessing ? 'opacity-50 cursor-wait' : ''}"
+                  disabled={isProcessing}>
+        {isProcessing ? 'Looking up...' : 'Look up...'}
                   </button>
             </div>
           </form>
