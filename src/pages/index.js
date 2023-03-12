@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useState,useEffect } from "react";
-import Image from 'next/image'
+
 import { Inter } from "next/font/google"
-//import styles from '@/styles/Home.module.css'
+
 import Footer from 'components/Footer';
 
 import { BeakerIcon } from '@heroicons/react/24/solid'
@@ -11,14 +11,33 @@ import { usePlausible } from 'next-plausible'
 const inter = Inter({ subsets: ['latin'] })
 const jobTitles = ['Software engineer', 'Aircraft Mechanic', 'Cosmetologist', "Mechanic", "Zookeeper", "Cashier"];
 
-
+function formatResponse(response) {
+  const parts = response.split('\n\n');
+  const description = parts[0];
+  const tasks = parts[1].split('\n').slice(1, -1);
+  const salary = parts[2]
+  //console.log(parts)
+  return (
+    <div className="max-w-2xl mx-auto">
+      <p className="text-lg leading-7 mb-4">{description}</p>
+      <ul className="list-disc list-inside mb-8">
+        {tasks.map((task, index) => (
+          <li className="mb-2" key={index}>
+            {task}
+          </li>
+        ))}
+      </ul>
+      <p className="text-lg leading-7 mb-4"><strong> Compensation Info</strong> {salary}</p>
+    </div>
+  );
+}
 
 export default function Home() {
   const plausible = usePlausible()
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
-  //const [searchTerm, setSearchTerm] = useState('');
+
   const [isProcessing, setIsProcessing] = useState(false);
 
 
@@ -86,7 +105,7 @@ export default function Home() {
         </h1>
       </header>
         </div>
-        <div className="px-8 py-5 sm:p-6">
+        <div className="px-8 py-10 sm:p-6">
             <form onSubmit={onSubmit}>
             <div className="w-full sm:max-w-xs">
                 <input
@@ -115,7 +134,7 @@ export default function Home() {
           </form>
           </div>
           <BeakerIcon className="h-6 w-6 text-red-500"/>
-        <code> {result} </code>
+        <div> {result ? formatResponse(result) : 'please enter a job title above'}  </div>
         <Footer />
 
         </div>
