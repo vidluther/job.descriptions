@@ -9,14 +9,31 @@ import { BeakerIcon } from '@heroicons/react/24/solid'
 import { usePlausible } from 'next-plausible'
 
 const inter = Inter({ subsets: ['latin'] })
-const jobTitles = ['Software engineer', 'Aircraft Mechanic', 'Cosmetologist', "Mechanic", "Zookeeper", "Cashier"];
+const jobTitles = [
+  'Nurse Practioner',
+  'Software engineer',
+  'Aircraft Mechanic',
+  'Cosmetologist',
+  'Epic Analyst',
+  'Zookeeper',
+  'Cashier',
+  'Dental Hygienist',
+  'Dental Assistant',
+  'Medical Assistant',
+  'Pharmacy Technician',
+  'Physical Therapist',
+  'Physical Therapist Assistant',
+  'Radiologic Technologist',
+  'Registered Nurse',
+
+];
 
 function formatResponse(response) {
   const parts = response.split('\n\n');
   const description = parts[0];
   const tasks = parts[1].split('\n').slice(1, -1).map(task => task.replace(/-/g, ''));
   const salary = parts[2]
-  //console.log(parts)
+  console.log(parts)
   return (
     <div className="max-w-2xl mx-auto">
       <p className="text-lg leading-7 mb-4">{description}</p>
@@ -84,7 +101,7 @@ export default function Home() {
     <>
       <Head>
         <title>Job Descriptions</title>
-        <meta name="description" content="A simple job description generator using OpenAI" />
+        <meta name="description" content="Find out what someone with a job title does.." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <link rel="icon" href="/favicon.ico" />
@@ -93,7 +110,7 @@ export default function Home() {
         <div className="px-4 py-5 sm:p-6">
         <header className="text-center mb-8">
         <h1 className="text-4xl font-bold">
-          Find out what a{' '}
+          Ever wonder what a{' '}
           <span className="inline-block">
             {jobTitles.map((title, index) => (
               <span key={title} className={index === jobTitleIndex ? '' : 'hidden'}>
@@ -101,7 +118,7 @@ export default function Home() {
               </span>
             ))}
           </span>{' '}
-          does
+          does?
         </h1>
       </header>
         </div>
@@ -112,7 +129,7 @@ export default function Home() {
                   type="text"
                   name="jobName"
                   className="py-2 px-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:ring-blue-400"
-                  placeholder="Enter name of the job"
+                  placeholder="Enter a job title..."
                   value={jobName}
                   onChange={(e) => setjobName(e.target.value)}
                 />
