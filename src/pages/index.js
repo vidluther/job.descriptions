@@ -14,15 +14,15 @@ const jobTitles = ['Software engineer', 'Aircraft Mechanic', 'Cosmetologist', "M
 function formatResponse(response) {
   const parts = response.split('\n\n');
   const description = parts[0];
-  const tasks = parts[1].split('\n').slice(1, -1);
+  const tasks = parts[1].split('\n').slice(1, -1).map(task => task.replace(/-/g, ''));
   const salary = parts[2]
   //console.log(parts)
   return (
     <div className="max-w-2xl mx-auto">
       <p className="text-lg leading-7 mb-4">{description}</p>
-      <ul className="list-disc list-inside mb-8">
+      <ul className="list-decimal list-inside mb-8">
         {tasks.map((task, index) => (
-          <li className="mb-2" key={index}>
+          <li className="mb-2 ml-4 list-item" key={index}>
             {task}
           </li>
         ))}
