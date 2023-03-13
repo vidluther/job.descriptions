@@ -57,7 +57,7 @@ export default function Home() {
 
     console.log(`Looking up ${jobName}...`);
     try {
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/openai", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>OpenAI Job Descriptions</title>
+        <title>Job Descriptions</title>
         <meta name="description" content="A simple job description generator using OpenAI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
