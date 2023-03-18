@@ -6,6 +6,7 @@ import { Inter } from "next/font/google"
 import Footer from 'components/Footer';
 import ApiResponse from 'components/apiResponse';
 
+
 import { BeakerIcon } from '@heroicons/react/24/solid'
 import { usePlausible } from 'next-plausible'
 
@@ -74,7 +75,7 @@ export default function Home() {
 
     setIsProcessing(true);
 
-    console.log(`Looking up ${jobName}...`);
+
     try {
       const response = await fetch("/api/openai", {
         method: "POST",
@@ -89,8 +90,7 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
       setApiResponseContent(data.result);
-      //setResult(data.result);
-      //setjobName("");
+
       setIsProcessing(false);
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -155,7 +155,7 @@ export default function Home() {
           <BeakerIcon className="h-6 w-6 text-red-500"/>
 
 
-          <ApiResponse content={apiResponseContent} jobName={jobName} />
+          <ApiResponse content={apiResponseContent} />
 
         <Footer />
 

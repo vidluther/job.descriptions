@@ -9,7 +9,7 @@ function formatContent(content) {
 
 const ApiResponse = ({ content }) => {
   if(!content) return "please enter a job title above"
-  console.log("going to format" + content)
+  //console.log("going to format" + content)
   //console.log("job name is " + jobName)
   const sections = formatContent(content);
 

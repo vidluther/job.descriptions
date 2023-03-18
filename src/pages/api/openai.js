@@ -4,6 +4,7 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+import { getCachedResponse, saveApiResponse } from 'utils/openAiCache';
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -25,8 +26,16 @@ export default async function (req, res) {
     return;
   }
 
-  // const capitalizedjob =
-  // job[0].toUpperCase() + job.slice(1).toLowerCase();
+
+  const cachedResponse = await getCachedResponse(job);
+
+  if (cachedResponse) {
+    console.log("Using cached response", cachedResponse.jobDescription);
+    res.status(200).json({ result: cachedResponse.jobDescription });
+    return
+  } else {
+    console.log("No cached response found");
+  }
 
   try {
 
@@ -37,6 +46,8 @@ export default async function (req, res) {
       temperature: 0.2
     });
     console.log(completion.data.choices[0]);
+    // Save the API response to the cache
+    await saveApiResponse(job, completion.data.choices[0].message.content);
     res.status(200).json({ result: completion.data.choices[0].message.content });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
@@ -60,7 +71,7 @@ function generateMessages(job) {
   const messages = [
     {"role": "system",
       "content":
-      "You are a career counselor that helps people figure out what career they may be best suited for them. They will give you a job title, and you will tell them 1. What a " + job + " does every day. 2. how much money can a " + job + " can pay in Texas. 3. What kind of people enjoy being a " + job},
+      "You are a career counselor that helps people figure out what career they may be best suited for them. They will give you a job title, and you will tell them 1. What does a " + job + " do ever day?. 2. How much money does a " + job + " make in Texas? 3. What kind of people enjoy being a " + job},
     {"role": "user", "content": job},
   ]
 
