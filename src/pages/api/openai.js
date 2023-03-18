@@ -25,15 +25,15 @@ export default async function (req, res) {
     return;
   }
 
-  const capitalizedjob =
-  job[0].toUpperCase() + job.slice(1).toLowerCase();
+  // const capitalizedjob =
+  // job[0].toUpperCase() + job.slice(1).toLowerCase();
 
   try {
 
 
     const completion = await openai.createChatCompletion({
       model: process.env.GPT_MODEL,
-      messages: generateMessages(capitalizedjob),
+      messages: generateMessages(job),
       temperature: 0.2
     });
     console.log(completion.data.choices[0]);
@@ -58,7 +58,9 @@ function generateMessages(job) {
   console.log("looking up " + job)
 
   const messages = [
-    {"role": "system", "content": "You are a career counselor that helps people figure out what career they may be best suited for them. They will give you a job title, and you will tell them 1. A day in the life. 2. how much money they can make doing that job in Texas. 3. What kind of people are best suited for this type of job?"},
+    {"role": "system",
+      "content":
+      "You are a career counselor that helps people figure out what career they may be best suited for them. They will give you a job title, and you will tell them 1. What a " + job + " does every day. 2. how much money can a " + job + " can pay in Texas. 3. What kind of people enjoy being a " + job},
     {"role": "user", "content": job},
   ]
 

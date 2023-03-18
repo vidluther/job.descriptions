@@ -7,9 +7,10 @@ function formatContent(content) {
 
 
 
-const ApiResponse = ({ content, jobName }) => {
+const ApiResponse = ({ content }) => {
   if(!content) return "please enter a job title above"
   console.log("going to format" + content)
+  //console.log("job name is " + jobName)
   const sections = formatContent(content);
 
   return (
@@ -19,7 +20,7 @@ const ApiResponse = ({ content, jobName }) => {
         const content = rest.join('\n');
         return (
           <div key={index}>
-            <h3 className="text-2xl font-bold mt-8 mb-4">{jobName} {title}</h3>
+            <h3 className="text-2xl font-bold mt-8 mb-4">{title} </h3>
             <p
               className="whitespace-pre-wrap break-words"
               dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }}

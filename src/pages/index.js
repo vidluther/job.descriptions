@@ -88,9 +88,9 @@ export default function Home() {
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
-
-      setResult(data.result);
-      setjobName("");
+      setApiResponseContent(data.result);
+      //setResult(data.result);
+      //setjobName("");
       setIsProcessing(false);
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -155,7 +155,7 @@ export default function Home() {
           <BeakerIcon className="h-6 w-6 text-red-500"/>
 
 
-          <ApiResponse content={result} jobName={jobName} />
+          <ApiResponse content={apiResponseContent} jobName={jobName} />
 
         <Footer />
 
