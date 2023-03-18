@@ -13,7 +13,7 @@ datasource db {
 
 model JobDescriptions {
   id        Int      @id @default(autoincrement())
-  openaiModel String @default("gpt-4")
+  gptModel String @default("gpt-4")
   jobName   String  @unique
   jobDescription   String
   createdAt DateTime @default(now())

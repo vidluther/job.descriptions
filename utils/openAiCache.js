@@ -12,10 +12,12 @@ export async function saveApiResponse(jobName, jobDescription) {
         jobName: lowerCaseJobName
       },
       update: {
+        gptModel: process.env.GPT_MODEL,
         jobName,
         jobDescription,
       },
       create: {
+        gptModel: process.env.GPT_MODEL,
         jobName,
         jobDescription,
       }
