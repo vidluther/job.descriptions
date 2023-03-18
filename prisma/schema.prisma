@@ -7,15 +7,17 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./job-descriptions.db"
+  url      = env("DATABASE_URL")
 }
 
 
 model JobDescriptions {
   id        Int      @id @default(autoincrement())
   gptModel String @default("gpt-4")
-  jobName   String  @unique
+  jobName   String
   jobDescription   String
   createdAt DateTime @default(now())
   updatedAt                DateTime      @updatedAt
+
+  @@unique ([gptModel, jobName])
 }

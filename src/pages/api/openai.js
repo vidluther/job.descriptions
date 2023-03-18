@@ -41,7 +41,7 @@ export default async function (req, res) {
 
 
     const completion = await openai.createChatCompletion({
-      model: process.env.GPT_MODEL,
+      model: process.env.NEXT_PUBLIC_GPT_MODEL,
       messages: generateMessages(job),
       temperature: 0.2
     });
