@@ -155,7 +155,8 @@ export default function Home() {
           <BeakerIcon className="h-6 w-6 text-red-500"/>
 
 
-          <ApiResponse content={result} />
+          <ApiResponse content={result} jobName={jobName} />
+
         <Footer />
 
         </div>
