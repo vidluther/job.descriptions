@@ -4,6 +4,7 @@ import { useState,useEffect } from "react";
 import { Inter } from "next/font/google"
 
 import Footer from 'components/Footer';
+import ApiResponse from 'components/apiResponse';
 
 import { BeakerIcon } from '@heroicons/react/24/solid'
 import { usePlausible } from 'next-plausible'
@@ -28,7 +29,7 @@ const jobTitles = [
 
 ];
 
-function formatResponse(response) {
+function oldformatResponse(response) {
   const parts = response.split('\n\n');
   const description = parts[0];
   const tasks = parts[1].split('\n').slice(1, -1).map(task => task.replace(/-/g, ''));
@@ -49,12 +50,13 @@ function formatResponse(response) {
   );
 }
 
+
 export default function Home() {
   const plausible = usePlausible()
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
-
+  const [apiResponseContent, setApiResponseContent] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
 
@@ -151,7 +153,9 @@ export default function Home() {
           </form>
           </div>
           <BeakerIcon className="h-6 w-6 text-red-500"/>
-        <div> {result ? formatResponse(result) : 'please enter a job title above'}  </div>
+
+
+          <ApiResponse content={result} />
         <Footer />
 
         </div>

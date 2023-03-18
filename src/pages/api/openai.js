@@ -32,10 +32,9 @@ export default async function (req, res) {
 
 
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: process.env.GPT_MODEL,
       messages: generateMessages(capitalizedjob),
-      temperature: 0.7,
-      max_tokens: 300
+      temperature: 0.2
     });
     console.log(completion.data.choices[0]);
     res.status(200).json({ result: completion.data.choices[0].message.content });
@@ -59,8 +58,8 @@ function generateMessages(job) {
   console.log("looking up " + job)
 
   const messages = [
-    {"role": "system", "content": "You are a helpful assistant that helps people understand what a career in a certain field entails, and how much money someone can make, if they decided to pursue a career in said field"},
-    {"role": "user", "content": 'Tell me what a day in the life of of a person who has the following job title may look like, and how much money can they make doing this job in Texas?' + job},
+    {"role": "system", "content": "You are a career counselor that helps people figure out what career they may be best suited for them. They will give you a job title, and you will tell them 1. A day in the life. 2. how much money they can make doing that job in Texas. 3. What kind of people are best suited for this type of job?"},
+    {"role": "user", "content": job},
   ]
 
   return messages;
