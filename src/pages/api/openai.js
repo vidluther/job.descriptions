@@ -34,7 +34,7 @@ export default async function (req, res) {
     res.status(200).json({ result: cachedResponse.jobDescription });
     return
   } else {
-    console.log("Nothing was cached locally for" + job);
+    console.log("Nothing found in our local cache db for " + job);
   }
 
   try {
