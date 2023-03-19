@@ -4,6 +4,8 @@ import { useState,useEffect } from "react";
 import { Inter } from "next/font/google"
 
 import Footer from 'components/Footer';
+import ApiResponse from 'components/apiResponse';
+
 
 import { BeakerIcon } from '@heroicons/react/24/solid'
 import { usePlausible } from 'next-plausible'
@@ -22,13 +24,12 @@ const jobTitles = [
   'Medical Assistant',
   'Pharmacy Technician',
   'Physical Therapist',
-  'Physical Therapist Assistant',
   'Radiologic Technologist',
   'Registered Nurse',
 
 ];
 
-function formatResponse(response) {
+function oldformatResponse(response) {
   const parts = response.split('\n\n');
   const description = parts[0];
   const tasks = parts[1].split('\n').slice(1, -1).map(task => task.replace(/-/g, ''));
@@ -49,12 +50,13 @@ function formatResponse(response) {
   );
 }
 
+
 export default function Home() {
   const plausible = usePlausible()
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
-
+  const [apiResponseContent, setApiResponseContent] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
 
@@ -72,7 +74,7 @@ export default function Home() {
 
     setIsProcessing(true);
 
-    console.log(`Looking up ${jobName}...`);
+
     try {
       const response = await fetch("/api/openai", {
         method: "POST",
@@ -86,9 +88,8 @@ export default function Home() {
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
+      setApiResponseContent(data.result);
 
-      setResult(data.result);
-      setjobName("");
       setIsProcessing(false);
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -106,11 +107,10 @@ export default function Home() {
 
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="px-4 py-5 sm:p-6">
-        <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold">
-          Ever wonder what a{' '}
+      <div className="min-h-screen bg-gray-100">
+        <header className="bg-white py-6 h-50">
+          <h1 className="text-2xl text-center font-bold">
+          Ever wonder what a{' '} <br />
           <span className="inline-block">
             {jobTitles.map((title, index) => (
               <span key={title} className={index === jobTitleIndex ? '' : 'hidden'}>
@@ -121,14 +121,14 @@ export default function Home() {
           does?
         </h1>
       </header>
-        </div>
-        <div className="px-8 py-10 sm:p-6">
+
+      <main className="flex flex-col items-center pt-12">
+        <div className="w-full sm:w-2/3 md:w-1/2 flex flex-col items-center">
             <form onSubmit={onSubmit}>
-            <div className="w-full sm:max-w-xs">
                 <input
                   type="text"
                   name="jobName"
-                  className="py-2 px-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring focus:ring-blue-400"
+                  className="border-2 border-gray-300 rounded-lg w-full sm:w-2/3 md:w-1/2 p-2 mb-4"
                   placeholder="Enter a job title..."
                   value={jobName}
                   onChange={(e) => setjobName(e.target.value)}
@@ -140,22 +140,22 @@ export default function Home() {
                     })}
                   type="submit"
                   value="Look up..."
-                  className="ml-3 inline-flex items-center rounded-md border border-transparent
-                  bg-indigo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-600
-                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800
-                  ${isProcessing ? 'opacity-50 cursor-wait' : ''}"
-                  disabled={isProcessing}>
-        {isProcessing ? 'Looking up...' : 'Look up...'}
-                  </button>
-            </div>
-          </form>
-          </div>
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-8"
+                >
+                  {isProcessing ? 'Looking up...' : 'Look it up...'}
+                </button>
+            </form>
+        </div>
           <BeakerIcon className="h-6 w-6 text-red-500"/>
-        <div> {result ? formatResponse(result) : 'please enter a job title above'}  </div>
+
+          <div className="w-full sm:w-2/3 md:w-1/2">
+            <ApiResponse content={apiResponseContent} />
+          </div>
+        </main>
         <Footer />
 
-        </div>
 
+      </div>
     </>
   )
 }
