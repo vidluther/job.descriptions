@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-const version = process.env.npm_package_version;
+const version = process.env.NEXT_PUBLIC_APP_VERSION;
 const gpt_model = process.env.NEXT_PUBLIC_GPT_MODEL;
 console.log(gpt_model)
 export default function Footer() {
@@ -16,7 +16,8 @@ export default function Footer() {
 
           <Link href="https://plausible.io/jd.luther.io?goal=Looked+Up"> Checkout what people are looking for .. </Link> <br />
 
-        </p>
+        </p> <br />
+        <p className="text-gray-500 text-sm text-center"> Build info {version} </p>
       </div>
     </footer>
   );
