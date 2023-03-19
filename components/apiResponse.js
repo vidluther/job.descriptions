@@ -14,7 +14,7 @@ const ApiResponse = ({ content }) => {
   const sections = formatContent(content);
 
   return (
-    <div className="text-base text-gray-800 mb-4 sm:w-3/4 lg:w-1/2 xl:w-1/3 mx-auto">
+    <div className="text-base text-gray-800">
       {sections.map((section, index) => {
         const [title, ...rest] = section.split(/\n/);
         const content = rest.join('\n');

@@ -42,9 +42,9 @@ processes = []
     restart_limit = 0
     timeout = "2s"
 
-[mounts]
-  source = "localdata"
-  destination = "/var/lib/litefs"
+# [mounts]
+#   source = "localdata"
+#   destination = "/var/lib/litefs"
 
 [deploy]
   release_command = "npx prisma db push"
