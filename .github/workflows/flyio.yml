@@ -14,3 +14,4 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          NEXT_PUBLIC_GPT_MODEL: ${{ secrets.NEXT_PUBLIC_GPT_MODEL }}
