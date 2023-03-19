@@ -4,7 +4,7 @@ FROM node:18-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY . .
-RUN yarn install --frozen-lockfile
+RUN npm install
 
 # If using npm with a `package-lock.json` comment out above and use below instead
 # RUN npm ci

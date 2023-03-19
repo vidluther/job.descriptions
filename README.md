@@ -30,13 +30,13 @@ I've also modified it to use TailwindCSS.. because I want to learn it.
    On Linux systems:
 
    ```bash
-   cp .env.example .env
+   cp env.example .env
    ```
 
    On Windows:
 
    ```powershell
-   copy .env.example .env
+   copy env.example .env
    ```
 
 6. Add your [API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file

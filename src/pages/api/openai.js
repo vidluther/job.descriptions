@@ -4,6 +4,7 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+import { getCachedResponse, saveApiResponse } from 'utils/openAiCache';
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -25,19 +26,28 @@ export default async function (req, res) {
     return;
   }
 
-  const capitalizedjob =
-  job[0].toUpperCase() + job.slice(1).toLowerCase();
+
+  const cachedResponse = await getCachedResponse(job);
+
+  if (cachedResponse) {
+    console.log("Using cached response", cachedResponse.jobDescription);
+    res.status(200).json({ result: cachedResponse.jobDescription });
+    return
+  } else {
+    console.log("Nothing found in our local cache db for " + job);
+  }
 
   try {
 
 
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: generateMessages(capitalizedjob),
-      temperature: 0.7,
-      max_tokens: 300
+      model: process.env.NEXT_PUBLIC_GPT_MODEL,
+      messages: generateMessages(job),
+      temperature: 0.2
     });
     console.log(completion.data.choices[0]);
+    // Save the API response to the cache
+    await saveApiResponse(job, completion.data.choices[0].message.content);
     res.status(200).json({ result: completion.data.choices[0].message.content });
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
@@ -59,8 +69,10 @@ function generateMessages(job) {
   console.log("looking up " + job)
 
   const messages = [
-    {"role": "system", "content": "You are a helpful assistant that helps people understand what a career in a certain field entails, and how much money someone can make, if they decided to pursue a career in said field"},
-    {"role": "user", "content": 'Tell me what a day in the life of of a person who has the following job title may look like, and how much money can they make doing this job in Texas?' + job},
+    {"role": "system",
+      "content":
+      "You are a career counselor that helps people figure out what career they may be best suited for them. They will give you a job title, and you will tell them 1. What does a " + job + " do ever day?. 2. How much money does a " + job + " make in Texas? 3. What kind of people enjoy being a " + job},
+    {"role": "user", "content": job},
   ]
 
   return messages;

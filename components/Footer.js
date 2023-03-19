@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
 const version = process.env.npm_package_version;
-
+const gpt_model = process.env.NEXT_PUBLIC_GPT_MODEL;
+console.log(gpt_model)
 export default function Footer() {
   return (
     <footer className="py-4">
@@ -10,9 +11,10 @@ export default function Footer() {
           Hacked together by {' '}
           <Link className="text-gray-700 hover:text-gray-900" href="https://luther.io">
             Vid Luther
-          </Link>{' '}
-          in 2023. <br />
-          <Link href="https://plausible.io/job-descriptions.vercel.app?goal=Looked+Up"> Checkout what people are looking for .. </Link> <br />
+          </Link> { ' '} in 2023  <br />
+          powered by OpenAI Chat model {gpt_model + ' '} <br />
+
+          <Link href="https://plausible.io/jd.luther.io?goal=Looked+Up"> Checkout what people are looking for .. </Link> <br />
 
         </p>
       </div>
