@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -15,7 +15,7 @@ model JobDescriptions {
   id        Int      @id @default(autoincrement())
   gptModel String @default("gpt-4")
   jobName   String
-  jobDescription   String
+  jobDescription   String @db.Text()
   createdAt DateTime @default(now())
   updatedAt                DateTime      @updatedAt
 

@@ -12,9 +12,9 @@ export default function Footer() {
           <Link className="text-gray-700 hover:text-gray-900" href="https://luther.io">
             Vid Luther
           </Link> { ' '} in 2023  <br />
-          using OpenAI Chat model {gpt_model + ' '} <br />
+          powered by OpenAI Chat model {gpt_model + ' '} <br />
 
-          <Link href="https://plausible.io/job-descriptions.vercel.app?goal=Looked+Up"> Checkout what people are looking for .. </Link> <br />
+          <Link href="https://plausible.io/jd.luther.io?goal=Looked+Up"> Checkout what people are looking for .. </Link> <br />
 
         </p>
       </div>

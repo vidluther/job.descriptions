@@ -7,12 +7,13 @@ processes = []
 
 [build]
   [build.args]
-    NEXT_PUBLIC_GPT_MODEL = "gpt-3.5-turbo"
+    NEXT_PUBLIC_GPT_MODEL = "gpt-4"
 
 [env]
   PORT = "8080"
 
 [experimental]
+  enable_consul = true
   auto_rollback = true
 
 [[services]]
@@ -40,3 +41,10 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+
+[mounts]
+  source = "localdata"
+  destination = "/var/lib/litefs"
+
+[deploy]
+  release_command = "npx prisma db push"

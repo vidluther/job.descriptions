@@ -8,13 +8,13 @@ function formatContent(content) {
 
 
 const ApiResponse = ({ content }) => {
-  if(!content) return "please enter a job title above"
+  if(!content) return ""
   //console.log("going to format" + content)
   //console.log("job name is " + jobName)
   const sections = formatContent(content);
 
   return (
-    <div className="text-base text-gray-800 mb-8">
+    <div className="text-base text-gray-800 mb-4 sm:w-3/4 lg:w-1/2 xl:w-1/3 mx-auto">
       {sections.map((section, index) => {
         const [title, ...rest] = section.split(/\n/);
         const content = rest.join('\n');
