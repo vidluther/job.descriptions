@@ -13,7 +13,6 @@ processes = []
   PORT = "8080"
 
 [experimental]
-  enable_consul = true
   auto_rollback = true
 
 [[services]]
