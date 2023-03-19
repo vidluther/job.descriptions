@@ -45,5 +45,5 @@ processes = []
 #   source = "localdata"
 #   destination = "/var/lib/litefs"
 
-[deploy]
-  release_command = "npx prisma db push"
+# [deploy]
+#   release_command = "npx prisma db push"
