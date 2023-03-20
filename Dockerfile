@@ -4,10 +4,10 @@ FROM node:18-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY . .
-RUN npm install
+#RUN npm install
 
 # If using npm with a `package-lock.json` comment out above and use below instead
-# RUN npm ci
+RUN npm ci
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -15,6 +15,8 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # then put the value on your fly.toml
 # Example:
 # ARG NEXT_PUBLIC_EXAMPLE="value here"
+ARG NEXT_PUBLIC_GPT_MODEL="gpt-5"
+ARG NEXT_PUBLIC_APP_VERSION="0.0.1"
 
 #RUN yarn build
 
@@ -27,6 +29,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_PUBLIC_APP_VERSION ${NEXT_PUBLIC_APP_VERSION}
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

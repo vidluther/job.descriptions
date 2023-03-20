@@ -17,7 +17,7 @@ jobs:
         run: echo ${{ env.build_time }}
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --build-secret NEXT_PUBLIC_APP_VERSION=${{ github.ref_name }}-${{ env.build_time }}
+      - run: flyctl deploy --remote-only --build-arg NEXT_PUBLIC_APP_VERSION="${{ github.ref_name }}-${{ env.build_time }}" --build-arg NEXT_PUBLIC_GPT_MODEL=${{ secrets.NEXT_PUBLIC_GPT_MODEL }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
           NEXT_PUBLIC_GPT_MODEL: ${{ secrets.NEXT_PUBLIC_GPT_MODEL }}

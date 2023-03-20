@@ -8,6 +8,7 @@ processes = []
 [build]
   [build.args]
     NEXT_PUBLIC_GPT_MODEL = "gpt-4"
+    NEXT_PUBLIC_APP_VERSION = "0.0.0"
 
 [env]
   PORT = "8080"
