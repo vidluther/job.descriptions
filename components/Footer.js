@@ -12,12 +12,12 @@ export default function Footer() {
           <Link className="text-gray-700 hover:text-gray-900" href="https://luther.io">
             Vid Luther
           </Link> { ' '} in 2023  <br />
-          powered by OpenAI Chat model {gpt_model + ' '} <br />
-
-          <Link href="https://plausible.io/jd.luther.io?goal=Looked+Up"> Checkout what people are looking for .. </Link> <br />
-
+          powered by OpenAI ChatGPT model {gpt_model + ' '} <br />
+          <p className="text-gray-500 text-sm text-center"> version info: {version} </p>
         </p> <br />
-        <p className="text-gray-500 text-sm text-center"> Build info {version} </p>
+        <div className="text-blue-500 text-sm text-center">
+        <Link href="https://plausible.io/jd.luther.io?goal=Looked+Up"> Curious what other people searched for? .. </Link>
+        </div>
       </div>
     </footer>
   );

@@ -6,7 +6,7 @@ export default function App({ Component, pageProps }) {
   return (
   <PlausibleProvider
     domain="jd.luther.io"
-    trackLocalhost="true"
+    trackLocalhost="false"
     enabled="true">
     <Component {...pageProps} />
   </PlausibleProvider>
