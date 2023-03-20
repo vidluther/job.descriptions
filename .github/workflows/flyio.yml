@@ -9,6 +9,8 @@ jobs:
     name: Deploy app
     runs-on: ubuntu-latest
     environment: production
+    env:
+      TZ: 'America/Chicago'
     steps:
       - name: Get Current Date and Time of Build
         id: set_date_and_time
