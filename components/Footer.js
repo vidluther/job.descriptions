@@ -13,8 +13,10 @@ export default function Footer() {
             Vid Luther
           </Link> { ' '} in 2023  <br />
           powered by OpenAI ChatGPT model {gpt_model + ' '} <br />
-          <p className="text-gray-500 text-sm text-center"> version info: {version} </p>
-        </p> <br />
+
+        </p>
+        <p className="text-gray-500 text-sm text-center"> build info: {version} </p>
+         <br />
         <div className="text-blue-500 text-sm text-center">
         <Link href="https://plausible.io/jd.luther.io?goal=Looked+Up"> Curious what other people searched for? .. </Link>
         </div>
