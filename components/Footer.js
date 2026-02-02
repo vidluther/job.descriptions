@@ -10,20 +10,21 @@ export default function Footer() {
       <div className="container mx-auto">
         <p className="text-gray-500 text-sm text-center">
           Vibed together by{" "}
-          <Link className="text-gray-700 hover:text-gray-900" href="https://luther.io">
+          <Link
+            className="text-gray-700 hover:text-gray-900"
+            href="https://luther.io"
+          >
             Vid Luther and Claude
           </Link>{" "}
           in 2026 <br />
           powered by {aiProvider} model {aiModel}
         </p>
-        <p className="text-gray-500 text-sm text-center"> build info: {version} </p>
+        <p className="text-gray-500 text-sm text-center">
+          {" "}
+          version: {version}{" "}
+        </p>
         <br />
-        <div className="text-blue-500 text-sm text-center">
-          <Link href="https://plausible.io/jd.luther.io?goal=Looked+Up">
-            {" "}
-            Curious what other people searched for? ..{" "}
-          </Link>
-        </div>
+        <div className="text-blue-500 text-sm text-center"></div>
       </div>
     </footer>
   );

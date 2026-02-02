@@ -8,7 +8,6 @@ import Header from "components/Header";
 import ApiResponse from "components/apiResponse";
 
 import { BeakerIcon } from "@heroicons/react/24/solid";
-import { usePlausible } from "next-plausible";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,7 +55,6 @@ function oldformatResponse(response) {
 }
 
 export default function Home() {
-  const plausible = usePlausible();
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
@@ -151,18 +149,6 @@ export default function Home() {
                 value={jobName}
                 onChange={(e) => setjobName(e.target.value)}
               />
-              <button
-                onClick={() =>
-                  plausible("Looked Up", {
-                    props: { job: jobName },
-                  })
-                }
-                type="submit"
-                value="Look up..."
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-8"
-              >
-                {isProcessing ? "Looking up..." : "Look it up..."}
-              </button>
             </form>
           </div>
           <BeakerIcon className="h-6 w-6 text-red-500" />
