@@ -1,4 +1,5 @@
 # AI Job Descriptions
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0e7a5679-39cf-4aae-b8d1-34a1941de152/deploy-status)](https://app.netlify.com/projects/jdescriptions/deploys)
 
 A Next.js app that uses AI to describe what different jobs are like day-to-day, what they pay in Texas, and what kind of people enjoy them. Enter a job title and get a detailed breakdown.
 
