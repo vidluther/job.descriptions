@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Inter } from "next/font/google";
 
@@ -11,6 +11,23 @@ import { BeakerIcon } from "@heroicons/react/24/solid";
 import { usePlausible } from "next-plausible";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const jobTitles = [
+  "Nurse Practioner",
+  "Software engineer",
+  "Aircraft Mechanic",
+  "Cosmetologist",
+  "Epic Analyst",
+  "Zookeeper",
+  "Cashier",
+  "Dental Hygienist",
+  "Dental Assistant",
+  "Medical Assistant",
+  "Pharmacy Technician",
+  "Physical Therapist",
+  "Radiologic Technologist",
+  "Registered Nurse",
+];
 
 function oldformatResponse(response) {
   const parts = response.split("\n\n");
@@ -40,11 +57,20 @@ function oldformatResponse(response) {
 
 export default function Home() {
   const plausible = usePlausible();
+  const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
   const [apiResponseContent, setApiResponseContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setJobTitleIndex((prevIndex) => (prevIndex + 1) % jobTitles.length);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -93,6 +119,26 @@ export default function Home() {
       </Head>
       <div className="min-h-screen bg-gray-100">
         <Header />
+
+        {/* Hero section with rotating job titles */}
+        <section className="bg-white py-8 border-b border-gray-200">
+          <h1 className="text-2xl text-center font-bold">
+            Ever wonder what a <br />
+            <span className="inline-block min-w-[200px]">
+              {jobTitles.map((title, index) => (
+                <span
+                  key={title}
+                  className={
+                    index === jobTitleIndex ? "text-blue-600" : "hidden"
+                  }
+                >
+                  {title}
+                </span>
+              ))}
+            </span>{" "}
+            does?
+          </h1>
+        </section>
 
         <main className="flex flex-col items-center pt-12">
           <div className="w-full sm:w-2/3 md:w-1/2 flex flex-col items-center">
