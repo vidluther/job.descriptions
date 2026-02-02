@@ -20,7 +20,7 @@ The goal is to eventually tie this into <https://texaswfc.com>, where people can
 
    ```bash
    cd job.descriptions
-   npm install
+   pnpm install
    ```
 
 3. Copy the example environment file and fill in your keys:
@@ -32,7 +32,7 @@ The goal is to eventually tie this into <https://texaswfc.com>, where people can
 4. Run the app:
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
    The app will be at [http://localhost:3000](http://localhost:3000).

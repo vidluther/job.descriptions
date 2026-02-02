@@ -57,6 +57,7 @@ export default function Home() {
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
   const [apiResponseContent, setApiResponseContent] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
 
@@ -73,7 +74,8 @@ export default function Home() {
     event.preventDefault();
 
     setIsProcessing(true);
-
+    setErrorMessage('');
+    setApiResponseContent('');
 
     try {
       const response = await fetch("/api/ai", {
@@ -89,12 +91,11 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
       setApiResponseContent(data.result);
-
-      setIsProcessing(false);
     } catch(error) {
-      // Consider implementing your own error handling logic here
       console.error(error);
-      alert(error.message);
+      setErrorMessage(error.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsProcessing(false);
     }
 
   }
@@ -149,6 +150,11 @@ export default function Home() {
           <BeakerIcon className="h-6 w-6 text-red-500"/>
 
           <div className="w-full sm:w-2/3 md:w-1/2">
+            {errorMessage && (
+              <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 mb-4">
+                <p>{errorMessage}</p>
+              </div>
+            )}
             <ApiResponse content={apiResponseContent} />
           </div>
         </main>
