@@ -39,17 +39,17 @@ The goal is to eventually tie this into <https://texaswfc.com>, where people can
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `AI_PROVIDER` | No | `gemini` (default) or `openai` |
-| `AI_MODEL` | No | Model name (defaults to `gemini-3-flash-preview` or `gpt-4` depending on provider) |
-| `GEMINI_API_KEY` | If using Gemini | Google AI Studio API key |
-| `OPENAI_API_KEY` | If using OpenAI | OpenAI API key |
-| `SUPABASE_URL` | Yes | Supabase project URL |
-| `SUPABASE_ANON_KEY` | Yes | Supabase anon/publishable key |
-| `NEXT_PUBLIC_AI_PROVIDER` | No | Displayed in footer |
-| `NEXT_PUBLIC_AI_MODEL` | No | Displayed in footer |
-| `NEXT_PUBLIC_APP_VERSION` | No | Build version displayed in footer |
+| Variable                  | Required        | Description                                                                        |
+| ------------------------- | --------------- | ---------------------------------------------------------------------------------- |
+| `AI_PROVIDER`             | No              | `gemini` (default) or `openai`                                                     |
+| `AI_MODEL`                | No              | Model name (defaults to `gemini-3-flash-preview` or `gpt-4` depending on provider) |
+| `GEMINI_API_KEY`          | If using Gemini | Google AI Studio API key                                                           |
+| `OPENAI_API_KEY`          | If using OpenAI | OpenAI API key                                                                     |
+| `SUPABASE_URL`            | Yes             | Supabase project URL                                                               |
+| `SUPABASE_ANON_KEY`       | Yes             | Supabase anon/publishable key                                                      |
+| `NEXT_PUBLIC_AI_PROVIDER` | No              | Displayed in footer                                                                |
+| `NEXT_PUBLIC_AI_MODEL`    | No              | Displayed in footer                                                                |
+| `NEXT_PUBLIC_APP_VERSION` | No              | Build version displayed in footer                                                  |
 
 ## Key Files
 

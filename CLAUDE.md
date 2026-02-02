@@ -38,11 +38,12 @@ utils/genAiCache.js        # getCachedResponse() and saveResponse()
 
 Server-side: `AI_PROVIDER`, `AI_MODEL`, `GEMINI_API_KEY`, `OPENAI_API_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`
 
-Client-side (NEXT_PUBLIC_): `NEXT_PUBLIC_AI_PROVIDER`, `NEXT_PUBLIC_AI_MODEL`, `NEXT_PUBLIC_APP_VERSION`
+Client-side (NEXT*PUBLIC*): `NEXT_PUBLIC_AI_PROVIDER`, `NEXT_PUBLIC_AI_MODEL`, `NEXT_PUBLIC_APP_VERSION`
 
 ## Supabase Schema
 
 Table `public.job_descriptions`:
+
 - `id` uuid (PK, auto-generated)
 - `job_name` text
 - `response` text
