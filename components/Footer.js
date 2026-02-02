@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const version = process.env.NEXT_PUBLIC_APP_VERSION;
 const aiProvider = process.env.NEXT_PUBLIC_AI_PROVIDER || "gemini";
-const aiModel = process.env.NEXT_PUBLIC_AI_MODEL || "gemini-3-flash-preview";
+const aiModel = process.env.NEXT_PUBLIC_AI_MODEL || "gemini-2.5-flash";
 
 export default function Footer() {
   return (
