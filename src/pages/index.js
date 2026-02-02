@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { Inter } from "next/font/google";
 
 import Footer from "components/Footer";
+import Header from "components/Header";
 import ApiResponse from "components/apiResponse";
 
 import { BeakerIcon } from "@heroicons/react/24/solid";
 import { usePlausible } from "next-plausible";
 
 const inter = Inter({ subsets: ["latin"] });
+
 const jobTitles = [
   "Nurse Practioner",
   "Software engineer",
@@ -64,11 +66,11 @@ export default function Home() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setJobTitleIndex((jobTitleIndex + 1) % jobTitles.length);
+      setJobTitleIndex((prevIndex) => (prevIndex + 1) % jobTitles.length);
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [jobTitleIndex]);
+  }, []);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -88,12 +90,17 @@ export default function Home() {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        throw (
+          data.error ||
+          new Error(`Request failed with status ${response.status}`)
+        );
       }
       setApiResponseContent(data.result);
     } catch (error) {
       console.error(error);
-      setErrorMessage(error.message || "Something went wrong. Please try again.");
+      setErrorMessage(
+        error.message || "Something went wrong. Please try again.",
+      );
     } finally {
       setIsProcessing(false);
     }
@@ -102,25 +109,36 @@ export default function Home() {
     <>
       <Head>
         <title>Job Descriptions</title>
-        <meta name="description" content="Find out what someone with a job title does.." />
+        <meta
+          name="description"
+          content="Find out what someone with a job title does.."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-screen bg-gray-100">
-        <header className="bg-white py-6 h-50">
+        <Header />
+
+        {/* Hero section with rotating job titles */}
+        <section className="bg-white py-8 border-b border-gray-200">
           <h1 className="text-2xl text-center font-bold">
             Ever wonder what a <br />
-            <span className="inline-block">
+            <span className="inline-block min-w-[200px]">
               {jobTitles.map((title, index) => (
-                <span key={title} className={index === jobTitleIndex ? "" : "hidden"}>
+                <span
+                  key={title}
+                  className={
+                    index === jobTitleIndex ? "text-blue-600" : "hidden"
+                  }
+                >
                   {title}
                 </span>
               ))}
             </span>{" "}
             does?
           </h1>
-        </header>
+        </section>
 
         <main className="flex flex-col items-center pt-12">
           <div className="w-full sm:w-2/3 md:w-1/2 flex flex-col items-center">
