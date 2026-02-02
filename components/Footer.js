@@ -6,25 +6,24 @@ const aiModel = process.env.NEXT_PUBLIC_AI_MODEL || "gemini-2.5-flash";
 
 export default function Footer() {
   return (
-    <footer className="py-4">
-      <div className="container mx-auto">
-        <p className="text-gray-500 text-sm text-center">
-          Vibed together by{" "}
-          <Link
-            className="text-gray-700 hover:text-gray-900"
-            href="https://luther.io"
-          >
-            Vid Luther and Claude
-          </Link>{" "}
-          in 2026 <br />
-          powered by {aiProvider} model {aiModel}
-        </p>
-        <p className="text-gray-500 text-sm text-center">
-          {" "}
-          version: {version}{" "}
-        </p>
-        <br />
-        <div className="text-blue-500 text-sm text-center"></div>
+    <footer className="py-8 px-6">
+      <div className="mx-auto max-w-5xl border-t border-gray-200 pt-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
+          <p>
+            Made by{" "}
+            <Link
+              className="text-charcoal hover:text-amber-accent transition-colors duration-200"
+              href="https://luther.io"
+            >
+              Vid Luther
+            </Link>{" "}
+            + Claude &middot; 2026
+          </p>
+          <p className="text-center sm:text-right">
+            Powered by {aiProvider} &middot; {aiModel}
+            {version && <span className="ml-2">v{version}</span>}
+          </p>
+        </div>
       </div>
     </footer>
   );

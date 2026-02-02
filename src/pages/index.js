@@ -1,26 +1,31 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-import { Inter } from "next/font/google";
+import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 
 import Footer from "components/Footer";
-import Header from "components/Header";
 import ApiResponse from "components/apiResponse";
 
-import { BeakerIcon } from "@heroicons/react/24/solid";
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
-const inter = Inter({ subsets: ["latin"] });
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const jobTitles = [
-  "Nurse Practioner",
-  "Software engineer",
+  "Nurse Practitioner",
+  "Software Engineer",
   "Aircraft Mechanic",
   "Cosmetologist",
   "Epic Analyst",
   "Zookeeper",
   "Cashier",
   "Dental Hygienist",
-  "Dental Assistant",
   "Medical Assistant",
   "Pharmacy Technician",
   "Physical Therapist",
@@ -28,62 +33,49 @@ const jobTitles = [
   "Registered Nurse",
 ];
 
-function oldformatResponse(response) {
-  const parts = response.split("\n\n");
-  const description = parts[0];
-  const tasks = parts[1]
-    .split("\n")
-    .slice(1, -1)
-    .map((task) => task.replace(/-/g, ""));
-  const salary = parts[2];
-  console.log(parts);
-  return (
-    <div className="max-w-2xl mx-auto">
-      <p className="text-lg leading-7 mb-4">{description}</p>
-      <ul className="list-decimal list-inside mb-8">
-        {tasks.map((task, index) => (
-          <li className="mb-2 ml-4 list-item" key={index}>
-            {task}
-          </li>
-        ))}
-      </ul>
-      <p className="text-lg leading-7 mb-4">
-        <strong> Compensation Info</strong> {salary}
-      </p>
-    </div>
-  );
-}
+const suggestedJobs = [
+  "Firefighter",
+  "Data Scientist",
+  "Chef",
+  "Pilot",
+  "Veterinarian",
+  "Architect",
+];
 
 export default function Home() {
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
-  const [result, setResult] = useState();
   const [apiResponseContent, setApiResponseContent] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const resultRef = useRef(null);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setJobTitleIndex((prevIndex) => (prevIndex + 1) % jobTitles.length);
-    }, 1000);
+    }, 2500);
 
     return () => clearInterval(intervalId);
   }, []);
 
-  async function onSubmit(event) {
-    event.preventDefault();
+  useEffect(() => {
+    if (apiResponseContent && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [apiResponseContent]);
 
+  async function submitJob(title) {
     setIsProcessing(true);
     setErrorMessage("");
     setApiResponseContent("");
+    setHasSearched(true);
 
     try {
       const response = await fetch("/api/ai", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ job: jobName }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ job: title }),
       });
 
       const data = await response.json();
@@ -103,65 +95,195 @@ export default function Home() {
       setIsProcessing(false);
     }
   }
+
+  function onSubmit(event) {
+    event.preventDefault();
+    if (!jobName.trim()) return;
+    submitJob(jobName);
+  }
+
+  function handleSuggestionClick(title) {
+    setjobName(title);
+    submitJob(title);
+  }
+
+  function resetSearch() {
+    setjobName("");
+    setApiResponseContent("");
+    setErrorMessage("");
+    setHasSearched(false);
+  }
+
   return (
     <>
       <Head>
-        <title>Job Descriptions</title>
+        <title>What Does a... — Job Description Explorer</title>
         <meta
           name="description"
-          content="Find out what someone with a job title does.."
+          content="Curious what people actually do at work? Enter any job title and discover daily responsibilities, skills needed, and who thrives in the role."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="min-h-screen bg-gray-100">
-        <Header />
 
-        {/* Hero section with rotating job titles */}
-        <section className="bg-white py-8 border-b border-gray-200">
-          <h1 className="text-2xl text-center font-bold">
-            Ever wonder what a <br />
-            <span className="inline-block min-w-[200px]">
-              {jobTitles.map((title, index) => (
-                <span
-                  key={title}
-                  className={
-                    index === jobTitleIndex ? "text-blue-600" : "hidden"
-                  }
-                >
-                  {title}
-                </span>
-              ))}
-            </span>{" "}
-            does?
-          </h1>
-        </section>
-
-        <main className="flex flex-col items-center pt-12">
-          <div className="w-full sm:w-2/3 md:w-1/2 flex flex-col items-center">
-            <form onSubmit={onSubmit}>
-              <input
-                type="text"
-                name="jobName"
-                className="border-2 border-gray-300 rounded-lg w-full sm:w-2/3 md:w-1/2 p-2 mb-4"
-                placeholder="Enter a job title..."
-                value={jobName}
-                onChange={(e) => setjobName(e.target.value)}
-              />
-            </form>
-          </div>
-          <BeakerIcon className="h-6 w-6 text-red-500" />
-
-          <div className="w-full sm:w-2/3 md:w-1/2">
-            {errorMessage && (
-              <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 mb-4">
-                <p>{errorMessage}</p>
-              </div>
+      <div className={`min-h-screen bg-cream ${plusJakarta.className}`}>
+        {/* Minimal header */}
+        <header className="relative z-10 px-6 py-5">
+          <nav className="mx-auto max-w-5xl flex items-center justify-between">
+            <button
+              onClick={resetSearch}
+              className="text-sm tracking-widest uppercase text-muted font-medium hover:text-charcoal transition-colors duration-200"
+            >
+              jd.luther.io
+            </button>
+            {hasSearched && (
+              <button
+                onClick={resetSearch}
+                className="text-sm text-amber-accent hover:text-charcoal transition-colors duration-200"
+              >
+                &larr; New search
+              </button>
             )}
-            <ApiResponse content={apiResponseContent} />
-          </div>
+          </nav>
+        </header>
+
+        {/* Hero */}
+        <main className="relative">
+          <section
+            className={`hero-glow px-6 ${hasSearched && apiResponseContent ? "pt-8 pb-12" : "pt-16 sm:pt-24 pb-20"} transition-all duration-700`}
+          >
+            <div className="relative z-10 mx-auto max-w-3xl text-center">
+              {/* Headline */}
+              <h1
+                className={`${instrumentSerif.className} text-charcoal leading-[1.1] mb-2`}
+              >
+                <span
+                  className={`block text-lg sm:text-xl text-muted font-normal mb-4 ${plusJakarta.className} tracking-wide`}
+                >
+                  Ever wonder what a
+                </span>
+                <span className="block relative">
+                  <span className="relative inline-block min-w-[280px] sm:min-w-[400px] text-4xl sm:text-6xl md:text-7xl">
+                    {jobTitles.map((title, index) => (
+                      <span
+                        key={title}
+                        className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out"
+                        style={{
+                          opacity: index === jobTitleIndex ? 1 : 0,
+                          transform: `translateY(${
+                            index === jobTitleIndex
+                              ? 0
+                              : index ===
+                                  (jobTitleIndex -
+                                    1 +
+                                    jobTitles.length) %
+                                    jobTitles.length
+                                ? -20
+                                : 20
+                          }px)`,
+                          color: "#D4943A",
+                        }}
+                      >
+                        {title}
+                      </span>
+                    ))}
+                    {/* Invisible spacer for height */}
+                    <span className="invisible" aria-hidden="true">
+                      {jobTitles.reduce((a, b) =>
+                        a.length > b.length ? a : b,
+                      )}
+                    </span>
+                  </span>
+                </span>
+                <span
+                  className={`block text-lg sm:text-xl text-muted font-normal mt-4 ${plusJakarta.className} tracking-wide`}
+                >
+                  actually does all day?
+                </span>
+              </h1>
+
+              {/* Search input */}
+              <form
+                onSubmit={onSubmit}
+                className="mt-12 sm:mt-16 max-w-xl mx-auto"
+              >
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="jobName"
+                    className="w-full text-lg sm:text-xl px-6 py-4 bg-white border-2 border-gray-200 rounded-2xl text-charcoal placeholder:text-gray-300 focus:outline-none focus:border-amber-accent focus:ring-4 focus:ring-amber-glow transition-all duration-300"
+                    placeholder="Type any job title..."
+                    value={jobName}
+                    onChange={(e) => setjobName(e.target.value)}
+                    autoComplete="off"
+                  />
+                  <button
+                    type="submit"
+                    disabled={isProcessing || !jobName.trim()}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 px-5 py-2 bg-charcoal text-cream rounded-xl text-sm font-medium hover:bg-deep disabled:opacity-30 disabled:hover:bg-charcoal transition-all duration-200"
+                  >
+                    {isProcessing ? "Thinking..." : "Discover \u2192"}
+                  </button>
+                </div>
+              </form>
+
+              {/* Suggestion chips */}
+              {!hasSearched && (
+                <div className="mt-8 animate-fade-in">
+                  <p className="text-xs uppercase tracking-widest text-muted mb-3">
+                    Try one
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {suggestedJobs.map((title) => (
+                      <button
+                        key={title}
+                        onClick={() => handleSuggestionClick(title)}
+                        className="px-4 py-1.5 text-sm rounded-full border border-gray-200 text-muted hover:border-amber-accent hover:text-amber-accent hover:bg-amber-glow transition-all duration-200"
+                      >
+                        {title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Loading indicator */}
+          {isProcessing && (
+            <div className="flex justify-center py-16 animate-fade-in">
+              <div className="flex space-x-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-accent loading-dot" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-accent loading-dot" />
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-accent loading-dot" />
+              </div>
+            </div>
+          )}
+
+          {/* Error message */}
+          {errorMessage && (
+            <div className="mx-auto max-w-2xl px-6 animate-fade-in-up">
+              <div className="bg-red-50 border border-red-100 text-red-600 rounded-2xl p-5 text-sm">
+                {errorMessage}
+              </div>
+            </div>
+          )}
+
+          {/* Results */}
+          {apiResponseContent && (
+            <section ref={resultRef} className="animate-fade-in-up">
+              <div className="mx-auto max-w-2xl px-6 pb-24">
+                <div className="border-t border-gray-200 pt-10">
+                  <p className="text-xs uppercase tracking-widest text-muted mb-6">
+                    About: {jobName}
+                  </p>
+                  <ApiResponse content={apiResponseContent} />
+                </div>
+              </div>
+            </section>
+          )}
         </main>
+
         <Footer />
       </div>
     </>

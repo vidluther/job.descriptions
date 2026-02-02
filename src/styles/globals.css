@@ -1,3 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #d4943a40;
+    color: #1c1c1c;
+  }
+}
+
+@layer components {
+  .hero-glow {
+    position: relative;
+  }
+
+  .hero-glow::before {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(ellipse, #d4943a0c 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .loading-dot {
+    animation: loadingDot 1.4s infinite ease-in-out both;
+  }
+
+  .loading-dot:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+  .loading-dot:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+  .loading-dot:nth-child(3) {
+    animation-delay: 0s;
+  }
+}
+
+@keyframes loadingDot {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
