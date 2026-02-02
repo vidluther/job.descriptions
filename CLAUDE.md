@@ -12,6 +12,7 @@ A Next.js 13 app that generates job descriptions using AI. Users enter a job tit
 - **Styling:** TailwindCSS 3
 - **Formatting:** oxfmt (`npm run fmt`, `npm run fmt:check`, `npm run fmt:fix`)
 - **AI:** Google Gemini (`@google/genai`) as default, OpenAI as alternative — controlled by `AI_PROVIDER` env var
+- **Rendering:** `react-markdown` with `@tailwindcss/typography` for rendering AI responses as styled markdown
 - **Database/Cache:** Supabase (Postgres) via `@supabase/supabase-js` — project ID: `qaqslpsfscjytcoixeio`
 - **Analytics:** Plausible (`next-plausible`)
 
@@ -21,6 +22,7 @@ A Next.js 13 app that generates job descriptions using AI. Users enter a job tit
 - **Caching:** Responses are cached in a Supabase `job_descriptions` table keyed on `(job_name, ai_provider, ai_model)`. This means the same job queried with different providers/models produces separate cache entries for comparison.
 - **No Prisma:** Previously used Prisma + MySQL. Migrated to Supabase JS client directly (Feb 2026). No ORM.
 - **No Fly.io:** Previously deployed on Fly.io. Deployment artifacts (Dockerfile, fly.toml, GitHub Actions workflow) were removed in Feb 2026. Deployment target is TBD.
+- **Markdown responses:** The AI prompt explicitly requests markdown formatting (`Format your response in markdown with headers and bullet points`). Responses are rendered client-side via `react-markdown` with Tailwind Typography prose classes.
 - **RLS disabled:** The `job_descriptions` table has RLS disabled. The anon key is only used server-side in the API route, not exposed to the browser. If the Supabase client is ever used client-side, RLS policies must be added.
 
 ## Project Structure
@@ -34,9 +36,10 @@ src/pages/_document.js    # Custom document
 src/styles/globals.css    # Global styles (Tailwind directives)
 src/styles/Home.module.css # Legacy CSS module (mostly unused)
 components/Footer.js      # Footer with provider/model display, links to Plausible stats
-components/apiResponse.js # Renders AI response with section formatting
+components/apiResponse.js # Renders AI response as styled markdown via react-markdown
 utils/supabaseClient.js   # Supabase client singleton
 utils/genAiCache.js       # getCachedResponse() and saveResponse()
+docs/plans/               # Feature design documents (created during brainstorming)
 ```
 
 ## Environment Variables
