@@ -77,17 +77,18 @@ export default async function handler(req, res) {
     await saveResponse(job, result, aiProvider, aiModel);
     res.status(200).json({ result });
   } catch (error) {
-    console.error('AI API error:', error);
+    console.error("AI API error:", error);
 
     const status = error?.status || error?.httpStatusCode || 500;
-    let message = 'An error occurred during your request.';
+    let message = "An error occurred during your request.";
 
     if (status === 503 || /overloaded|unavailable/i.test(error.message)) {
-      message = 'The AI model is currently overloaded. Please try again in a moment.';
+      message =
+        "The AI model is currently overloaded. Please try again in a moment.";
     } else if (status === 429) {
-      message = 'Too many requests. Please wait a moment and try again.';
+      message = "Too many requests. Please wait a moment and try again.";
     } else if (status === 401 || status === 403) {
-      message = 'There is an issue with the AI service configuration.';
+      message = "There is an issue with the AI service configuration.";
     }
 
     res.status(status >= 400 && status < 600 ? status : 500).json({
