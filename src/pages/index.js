@@ -1,40 +1,41 @@
-import Head from 'next/head'
-import { useState,useEffect } from "react";
+import Head from "next/head";
+import { useState, useEffect } from "react";
 
-import { Inter } from "next/font/google"
+import { Inter } from "next/font/google";
 
-import Footer from 'components/Footer';
-import ApiResponse from 'components/apiResponse';
+import Footer from "components/Footer";
+import ApiResponse from "components/apiResponse";
 
+import { BeakerIcon } from "@heroicons/react/24/solid";
+import { usePlausible } from "next-plausible";
 
-import { BeakerIcon } from '@heroicons/react/24/solid'
-import { usePlausible } from 'next-plausible'
-
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 const jobTitles = [
-  'Nurse Practioner',
-  'Software engineer',
-  'Aircraft Mechanic',
-  'Cosmetologist',
-  'Epic Analyst',
-  'Zookeeper',
-  'Cashier',
-  'Dental Hygienist',
-  'Dental Assistant',
-  'Medical Assistant',
-  'Pharmacy Technician',
-  'Physical Therapist',
-  'Radiologic Technologist',
-  'Registered Nurse',
-
+  "Nurse Practioner",
+  "Software engineer",
+  "Aircraft Mechanic",
+  "Cosmetologist",
+  "Epic Analyst",
+  "Zookeeper",
+  "Cashier",
+  "Dental Hygienist",
+  "Dental Assistant",
+  "Medical Assistant",
+  "Pharmacy Technician",
+  "Physical Therapist",
+  "Radiologic Technologist",
+  "Registered Nurse",
 ];
 
 function oldformatResponse(response) {
-  const parts = response.split('\n\n');
+  const parts = response.split("\n\n");
   const description = parts[0];
-  const tasks = parts[1].split('\n').slice(1, -1).map(task => task.replace(/-/g, ''));
-  const salary = parts[2]
-  console.log(parts)
+  const tasks = parts[1]
+    .split("\n")
+    .slice(1, -1)
+    .map((task) => task.replace(/-/g, ""));
+  const salary = parts[2];
+  console.log(parts);
   return (
     <div className="max-w-2xl mx-auto">
       <p className="text-lg leading-7 mb-4">{description}</p>
@@ -45,20 +46,21 @@ function oldformatResponse(response) {
           </li>
         ))}
       </ul>
-      <p className="text-lg leading-7 mb-4"><strong> Compensation Info</strong> {salary}</p>
+      <p className="text-lg leading-7 mb-4">
+        <strong> Compensation Info</strong> {salary}
+      </p>
     </div>
   );
 }
 
-
 export default function Home() {
-  const plausible = usePlausible()
+  const plausible = usePlausible();
   const [jobTitleIndex, setJobTitleIndex] = useState(0);
   const [jobName, setjobName] = useState("");
   const [result, setResult] = useState();
-  const [apiResponseContent, setApiResponseContent] = useState('');
+  const [apiResponseContent, setApiResponseContent] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -68,15 +70,15 @@ export default function Home() {
     return () => clearInterval(intervalId);
   }, [jobTitleIndex]);
 
-
   async function onSubmit(event) {
     event.preventDefault();
 
     setIsProcessing(true);
-
+    setErrorMessage("");
+    setApiResponseContent("");
 
     try {
-      const response = await fetch("/api/openai", {
+      const response = await fetch("/api/ai", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,14 +91,12 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
       setApiResponseContent(data.result);
-
-      setIsProcessing(false);
-    } catch(error) {
-      // Consider implementing your own error handling logic here
+    } catch (error) {
       console.error(error);
-      alert(error.message);
+      setErrorMessage(error.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsProcessing(false);
     }
-
   }
   return (
     <>
@@ -110,52 +110,56 @@ export default function Home() {
       <div className="min-h-screen bg-gray-100">
         <header className="bg-white py-6 h-50">
           <h1 className="text-2xl text-center font-bold">
-          Ever wonder what a{' '} <br />
-          <span className="inline-block">
-            {jobTitles.map((title, index) => (
-              <span key={title} className={index === jobTitleIndex ? '' : 'hidden'}>
-                {title}
-              </span>
-            ))}
-          </span>{' '}
-          does?
-        </h1>
-      </header>
+            Ever wonder what a <br />
+            <span className="inline-block">
+              {jobTitles.map((title, index) => (
+                <span key={title} className={index === jobTitleIndex ? "" : "hidden"}>
+                  {title}
+                </span>
+              ))}
+            </span>{" "}
+            does?
+          </h1>
+        </header>
 
-      <main className="flex flex-col items-center pt-12">
-        <div className="w-full sm:w-2/3 md:w-1/2 flex flex-col items-center">
+        <main className="flex flex-col items-center pt-12">
+          <div className="w-full sm:w-2/3 md:w-1/2 flex flex-col items-center">
             <form onSubmit={onSubmit}>
-                <input
-                  type="text"
-                  name="jobName"
-                  className="border-2 border-gray-300 rounded-lg w-full sm:w-2/3 md:w-1/2 p-2 mb-4"
-                  placeholder="Enter a job title..."
-                  value={jobName}
-                  onChange={(e) => setjobName(e.target.value)}
-                />
-                <button
-                  onClick={() =>
-                    plausible('Looked Up', {
-                      props: { job: jobName },
-                    })}
-                  type="submit"
-                  value="Look up..."
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-8"
-                >
-                  {isProcessing ? 'Looking up...' : 'Look it up...'}
-                </button>
+              <input
+                type="text"
+                name="jobName"
+                className="border-2 border-gray-300 rounded-lg w-full sm:w-2/3 md:w-1/2 p-2 mb-4"
+                placeholder="Enter a job title..."
+                value={jobName}
+                onChange={(e) => setjobName(e.target.value)}
+              />
+              <button
+                onClick={() =>
+                  plausible("Looked Up", {
+                    props: { job: jobName },
+                  })
+                }
+                type="submit"
+                value="Look up..."
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-8"
+              >
+                {isProcessing ? "Looking up..." : "Look it up..."}
+              </button>
             </form>
-        </div>
-          <BeakerIcon className="h-6 w-6 text-red-500"/>
+          </div>
+          <BeakerIcon className="h-6 w-6 text-red-500" />
 
           <div className="w-full sm:w-2/3 md:w-1/2">
+            {errorMessage && (
+              <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 mb-4">
+                <p>{errorMessage}</p>
+              </div>
+            )}
             <ApiResponse content={apiResponseContent} />
           </div>
         </main>
         <Footer />
-
-
       </div>
     </>
-  )
+  );
 }

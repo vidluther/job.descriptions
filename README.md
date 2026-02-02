@@ -1,52 +1,62 @@
 # AI Job Descriptions
 
-This is just a play thing for me, where I am using the OpenAI API to learn more about different job titles that I see.
+A Next.js app that uses AI to describe what different jobs are like day-to-day, what they pay in Texas, and what kind of people enjoy them. Enter a job title and get a detailed breakdown.
 
-The goal is to eventually tie this into <https://texaswfc.com> , where people will be able to see what a specific job entails, how much it pays and then decide if they want to take the course or not.
+The goal is to eventually tie this into <https://texaswfc.com>, where people can see what a specific job entails, how much it pays, and decide if they want to take a course for it.
 
-It is inspired heaving by the  OpenAI API [quickstart tutorial](https://beta.openai.com/docs/quickstart). It uses the [Next.js](https://nextjs.org/) framework with [React](https://reactjs.org/). Check out the tutorial or follow the instructions below to get set up.
+## Architecture
 
-I've also modified it to use TailwindCSS.. because I want to learn it.
+- **Frontend:** Next.js 13 with React and TailwindCSS
+- **AI Provider:** Configurable via `AI_PROVIDER` env var (supports `gemini` and `openai`)
+- **Cache/Database:** Supabase (Postgres) — responses are cached by job name + provider + model
+- **API Route:** `/api/ai` dispatches to the configured provider
+- **Analytics:** Plausible via `next-plausible`
+
 ## Setup
 
-1. If you don’t have Node.js installed, [install it from here](https://nodejs.org/en/) (Node.js version >= 14.6.0 required)
+1. Install [Node.js](https://nodejs.org/en/) (>= 14.6.0)
 
-2. Clone this repository
-
-3. Navigate into the project directory
+2. Clone this repository and install dependencies:
 
    ```bash
    cd job.descriptions
+   pnpm install
    ```
 
-4. Install the requirements
-
-   ```bash
-   npm install
-   ```
-
-5. Make a copy of the example environment variables file
-
-   On Linux systems:
+3. Copy the example environment file and fill in your keys:
 
    ```bash
    cp env.example .env
    ```
 
-   On Windows:
-
-   ```powershell
-   copy env.example .env
-   ```
-
-6. Add your [API key](https://beta.openai.com/account/api-keys) to the newly created `.env` file
-
-7. Run the app
+4. Run the app:
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
-You should now be able to access the app at [http://localhost:3000](http://localhost:3000)!
+   The app will be at [http://localhost:3000](http://localhost:3000).
 
-Enter a job title, and it'll give you some information about it.
+## Environment Variables
+
+| Variable                  | Required        | Description                                                                        |
+| ------------------------- | --------------- | ---------------------------------------------------------------------------------- |
+| `AI_PROVIDER`             | No              | `gemini` (default) or `openai`                                                     |
+| `AI_MODEL`                | No              | Model name (defaults to `gemini-3-flash-preview` or `gpt-4` depending on provider) |
+| `GEMINI_API_KEY`          | If using Gemini | Google AI Studio API key                                                           |
+| `OPENAI_API_KEY`          | If using OpenAI | OpenAI API key                                                                     |
+| `SUPABASE_URL`            | Yes             | Supabase project URL                                                               |
+| `SUPABASE_ANON_KEY`       | Yes             | Supabase anon/publishable key                                                      |
+| `NEXT_PUBLIC_AI_PROVIDER` | No              | Displayed in footer                                                                |
+| `NEXT_PUBLIC_AI_MODEL`    | No              | Displayed in footer                                                                |
+| `NEXT_PUBLIC_APP_VERSION` | No              | Build version displayed in footer                                                  |
+
+## Key Files
+
+```
+src/pages/api/ai.js      # API route — provider dispatch, caching, prompt
+src/pages/index.js        # Main page — job title input form
+components/Footer.js      # Footer with provider/model info
+utils/supabaseClient.js   # Supabase client singleton
+utils/genAiCache.js       # Cache read/write using Supabase
+```

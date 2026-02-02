@@ -1,14 +1,12 @@
-import React from 'react';
+import React from "react";
 
 function formatContent(content) {
   const sections = content.split(/\n{2}(?=\d+\. )/);
   return sections.map((section) => section.trim());
 }
 
-
-
 const ApiResponse = ({ content }) => {
-  if(!content) return ""
+  if (!content) return "";
   //console.log("going to format" + content)
   //console.log("job name is " + jobName)
   const sections = formatContent(content);
@@ -17,13 +15,13 @@ const ApiResponse = ({ content }) => {
     <div className="text-base text-gray-800">
       {sections.map((section, index) => {
         const [title, ...rest] = section.split(/\n/);
-        const content = rest.join('\n');
+        const content = rest.join("\n");
         return (
           <div key={index}>
             <h3 className="text-2xl font-bold mt-8 mb-4">{title} </h3>
             <p
               className="whitespace-pre-wrap break-words"
-              dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, '<br />') }}
+              dangerouslySetInnerHTML={{ __html: content.replace(/\n/g, "<br />") }}
             />
           </div>
         );
