@@ -15,13 +15,15 @@
     "@google/genai": "^1.39.0",
     "@heroicons/react": "^2.0.15",
     "@supabase/supabase-js": "^2.93.3",
+    "@tailwindcss/typography": "^0.5.19",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "next": "13.2.4",
     "next-plausible": "^3.7.2",
     "openai": "^6.17.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

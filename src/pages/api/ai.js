@@ -3,10 +3,10 @@ import OpenAI from "openai";
 import { getCachedResponse, saveResponse } from "utils/genAiCache";
 
 const aiProvider = process.env.AI_PROVIDER || "gemini";
-const aiModel =
-  aiProvider === "gemini"
-    ? process.env.AI_MODEL || "gemini-2.5-flash"
-    : process.env.AI_MODEL || "gpt-4";
+const aiModel = process.env.AI_MODEL || "gemini-2.5-flash";
+
+// console.log("AI Model:", aiModel);
+// console.log("AI Provider:", aiProvider);
 
 async function callGemini(prompt) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
@@ -34,11 +34,9 @@ function buildPrompt(job) {
     "1. What does a " +
     job +
     " do every day? " +
-    "2. How much money does a " +
+    "2. What kind of people enjoy being a " +
     job +
-    " make in Texas? " +
-    "3. What kind of people enjoy being a " +
-    job
+    "? Format your response in markdown with headers and bullet points."
   );
 }
 
@@ -86,7 +84,8 @@ export default async function handler(req, res) {
     let message = "An error occurred during your request.";
 
     if (status === 503 || /overloaded|unavailable/i.test(error.message)) {
-      message = "The AI model is currently overloaded. Please try again in a moment.";
+      message =
+        "The AI model is currently overloaded. Please try again in a moment.";
     } else if (status === 429) {
       message = "Too many requests. Please wait a moment and try again.";
     } else if (status === 401 || status === 403) {
