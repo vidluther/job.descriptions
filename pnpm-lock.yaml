@@ -12,7 +12,7 @@ importers:
         specifier: ^1.39.0
         version: 1.39.0
       '@heroicons/react':
-        specifier: ^2.0.15
+        specifier: ^2.2.0
         version: 2.2.0(react@19.2.4)
       '@supabase/supabase-js':
         specifier: ^2.93.3
